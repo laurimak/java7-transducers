@@ -1,6 +1,7 @@
 package transducers;
 
 import com.google.common.base.Function;
+import com.google.common.base.Functions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
@@ -37,7 +38,7 @@ public class Transducers {
     public static <P, R, S> Transducer<P, R> compose(final Transducer<P, S> t1, final Transducer<S, R> t2) {
         return new Transducer<P, R>() {
             @Nullable @Override public Iterable<R> apply(@Nullable Iterable<P> input) {
-                return t2.apply(t1.apply(input));
+                return Functions.compose(t2, t1).apply(input);
             }
         };
     }
