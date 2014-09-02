@@ -5,15 +5,13 @@ import com.google.common.base.Functions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
-import javax.annotation.Nullable;
-
 public class Transducers {
     public interface Transducer<P, R> extends Function<Iterable<P>, Iterable<R>> {
     }
 
     public static <T> Transducer<T, T> filter(final Predicate<? super T> predicate) {
         return new Transducer<T, T>() {
-            @Nullable @Override public Iterable<T> apply(@Nullable Iterable<T> input) {
+            @Override public Iterable<T> apply(Iterable<T> input) {
                 return Iterables.filter(input, predicate);
             }
         };
@@ -25,7 +23,7 @@ public class Transducers {
 
     public static <P, R> Transducer<P, R> map(final Function<? super P, ? extends R> mapping) {
         return new Transducer<P, R>() {
-            @Nullable @Override public Iterable<R> apply(@Nullable Iterable<P> input) {
+            @Override public Iterable<R> apply(Iterable<P> input) {
                 return Iterables.transform(input, mapping);
             }
         };
@@ -37,7 +35,7 @@ public class Transducers {
 
     public static <P, R, S> Transducer<P, R> compose(final Transducer<P, S> t1, final Transducer<S, R> t2) {
         return new Transducer<P, R>() {
-            @Nullable @Override public Iterable<R> apply(@Nullable Iterable<P> input) {
+            @Override public Iterable<R> apply(Iterable<P> input) {
                 return Functions.compose(t2, t1).apply(input);
             }
         };
